@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
+
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class UserController {
     public UserDto createUser(@Valid @RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
-    
+
     @PatchMapping("/{userId}")
     public UserDto updateUser(
             @PathVariable Long userId,
