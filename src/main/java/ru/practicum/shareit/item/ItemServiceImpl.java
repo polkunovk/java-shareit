@@ -33,7 +33,7 @@ public class ItemServiceImpl implements ItemService {
             throw new AccessDeniedException("Only owner can update item");
         }
 
-        ItemMapper.updateItemFromDto(itemDto, existingItem); // Используем маппер
+        ItemMapper.updateItemFromDto(itemDto, existingItem);
         return ItemMapper.toItemDto(itemRepository.save(existingItem));
     }
 

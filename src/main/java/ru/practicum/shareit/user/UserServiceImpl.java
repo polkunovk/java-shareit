@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(Long userId, UserDto userDto) {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
-        UserMapper.updateUserFromDto(userDto, existingUser); // Используем маппер
+        UserMapper.updateUserFromDto(userDto, existingUser);
         return UserMapper.toUserDto(userRepository.save(existingUser));
     }
 

@@ -51,7 +51,6 @@ public class ItemController {
         return itemService.searchItems(text);
     }
 
-    // Обработка исключений
     @ExceptionHandler({NotFoundException.class, AccessDeniedException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleItemExceptions(RuntimeException e) {

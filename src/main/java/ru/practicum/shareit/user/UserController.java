@@ -43,7 +43,6 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
-    // Обработка исключений (можно вынести в @ControllerAdvice)
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNotFound(NotFoundException e) {

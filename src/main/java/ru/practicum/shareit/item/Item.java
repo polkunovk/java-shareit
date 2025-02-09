@@ -15,5 +15,5 @@ public class Item {
     private String description;
     private Boolean available;
     private User owner;
-    private ItemRequest request; // Для связи с запросами (используется в следующем спринте)
+    private ItemRequest request;
 }
