@@ -26,19 +26,25 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleConflictException(ConflictException ex) {
-        return ex.getMessage();
+    public Map<String, String> handleConflictException(ConflictException ex) {
+        return Map.of("ошибка", ex.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleNotFoundException(NotFoundException ex) {
-        return ex.getMessage();
+    public Map<String, String> handleNotFoundException(NotFoundException ex) {
+        return Map.of("ошибка", ex.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Map<String, String> handleAccessDeniedException(AccessDeniedException ex) {
+        return Map.of("ошибка", ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleOtherExceptions(Exception ex) {
-        return "Внутренняя ошибка сервера";
+    public Map<String, String> handleOtherExceptions(Exception ex) {
+        return Map.of("ошибка", "Внутренняя ошибка сервера");
     }
 }
