@@ -2,6 +2,7 @@ package ru.practicum.shareit.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import java.util.List;
@@ -14,6 +15,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new ConflictException("Email уже существует");
+        }
         User user = UserMapper.toUser(userDto);
         return UserMapper.toUserDto(userRepository.save(user));
     }
@@ -21,7 +25,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(Long userId, UserDto userDto) {
         User existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+
+        if (userDto.getEmail() != null &&
+                !existingUser.getEmail().equals(userDto.getEmail()) &&
+                userRepository.existsByEmail(userDto.getEmail())) {
+            throw new ConflictException("Email уже занят");
+        }
+
         UserMapper.updateUserFromDto(userDto, existingUser);
         return UserMapper.toUserDto(userRepository.save(existingUser));
     }
@@ -29,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long userId) {
         return UserMapper.toUserDto(userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found")));
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден")));
     }
 
     @Override

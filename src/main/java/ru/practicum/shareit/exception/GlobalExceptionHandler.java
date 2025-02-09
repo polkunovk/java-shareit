@@ -23,4 +23,22 @@ public class GlobalExceptionHandler {
         });
         return errors;
     }
+
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleConflictException(ConflictException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNotFoundException(NotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleOtherExceptions(Exception ex) {
+        return "Внутренняя ошибка сервера";
+    }
 }
