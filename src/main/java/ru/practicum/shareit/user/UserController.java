@@ -19,6 +19,7 @@ public class UserController {
     public UserDto createUser(@Valid @RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
+    
     @PatchMapping("/{userId}")
     public UserDto updateUser(
             @PathVariable Long userId,
