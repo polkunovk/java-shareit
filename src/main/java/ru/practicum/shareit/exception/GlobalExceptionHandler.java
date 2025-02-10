@@ -32,27 +32,27 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleConflictException(ConflictException ex) {
         log.error("Конфликт: {}", ex.getMessage());
-        return new ErrorResponse("Конфликт: " + ex.getMessage());
+        return new ErrorResponse(ex.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(NotFoundException ex) {
         log.error("Не найдено: {}", ex.getMessage());
-        return new ErrorResponse("Не найдено: " + ex.getMessage());
+        return new ErrorResponse(ex.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleAccessDeniedException(AccessDeniedException ex) {
         log.error("Доступ запрещен: {}", ex.getMessage());
-        return new ErrorResponse("Доступ запрещен: " + ex.getMessage());
+        return new ErrorResponse(ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleOtherExceptions(Exception ex) {
         log.error("Внутренняя ошибка: {}", ex.getMessage(), ex);
-        return new ErrorResponse("Внутренняя ошибка: " + ex.getMessage());
+        return new ErrorResponse("Произошла непредвиденная ошибка");
     }
 }

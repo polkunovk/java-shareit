@@ -22,7 +22,8 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto addItem(Long userId, ItemDto itemDto) {
         User owner = UserMapper.toUser(userService.getUserById(userId));
         Item item = ItemMapper.toItem(itemDto, owner);
-        return ItemMapper.toItemDto(itemRepository.save(item));
+        Item savedItem = itemRepository.save(item);
+        return ItemMapper.toItemDto(savedItem);
     }
 
     @Override
@@ -34,8 +35,12 @@ public class ItemServiceImpl implements ItemService {
             throw new AccessDeniedException("Только владелец может обновить предмет");
         }
 
-        ItemMapper.updateItemFromDto(itemDto, existingItem);
-        return ItemMapper.toItemDto(itemRepository.save(existingItem));
+        if (itemDto.getName() != null) existingItem.setName(itemDto.getName());
+        if (itemDto.getDescription() != null) existingItem.setDescription(itemDto.getDescription());
+        if (itemDto.getAvailable() != null) existingItem.setAvailable(itemDto.getAvailable());
+
+        Item updatedItem = itemRepository.save(existingItem);
+        return ItemMapper.toItemDto(updatedItem);
     }
 
     @Override
