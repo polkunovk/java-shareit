@@ -8,7 +8,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.UserService;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,7 +58,7 @@ public class ItemServiceImpl implements ItemService {
         }
         String searchText = text.toLowerCase();
         return itemRepository.search(searchText).stream()
-                .filter(Item::getAvailable)
+                .filter(Item::isAvailable)
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }

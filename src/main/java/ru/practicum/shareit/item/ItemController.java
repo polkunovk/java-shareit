@@ -4,8 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.exception.AccessDeniedException;
-import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import java.util.List;
 
@@ -50,11 +48,5 @@ public class ItemController {
             @RequestParam String text
     ) {
         return itemService.searchItems(text);
-    }
-
-    @ExceptionHandler({NotFoundException.class, AccessDeniedException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleItemExceptions(RuntimeException e) {
-        return e.getMessage();
     }
 }
