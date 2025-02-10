@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ErrorResponse handleValidationExceptions(MethodArgumentNotValidException ex) {
         log.error("Ошибка валидации: {}", ex.getMessage());
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach(error -> {
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
             String message = error.getDefaultMessage();
             errors.put(fieldName, message);
         });
-        return errors;
+        return new ErrorResponse("Ошибка валидации: " + errors.toString());
     }
 
     @ExceptionHandler(ConflictException.class)
@@ -53,6 +53,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleOtherExceptions(Exception ex) {
         log.error("Внутренняя ошибка: {}", ex.getMessage(), ex);
-        return new ErrorResponse("Произошла непредвиденная ошибка");
+        return new ErrorResponse(ex.getMessage());
     }
 }
