@@ -16,37 +16,49 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
+    private static final String USER_ID_PATH = "/{userId}";
     private final UserService userService;
 
     @GetMapping
     public Collection<UserDto> getAllUsers() {
-        log.info("Запрос на получение списка всех пользователей");
+        logRequest("получение списка всех пользователей");
         return userService.getAllUsers();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@Valid @RequestBody UserDto dto) {
-        log.info("Запрос на добавление нового пользователя: {}", dto.getName());
-        return userService.createUser(dto);
+    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+        logRequest("добавление нового пользователя: " + userDto.getEmail());
+        return userService.createUser(userDto);
     }
 
-    @PatchMapping("/{id}")
-    public UserDto updateUser(@PathVariable Long id, @RequestBody UserUpdateDto dto) {
-        log.info("Запрос на обновление пользователя с id = {}", id);
-        return userService.updateUser(id, dto);
+    @PatchMapping(USER_ID_PATH)
+    public UserDto updateUser(
+            @PathVariable Long userId,
+            @RequestBody UserUpdateDto updateDto
+    ) {
+        logRequest("обновление пользователя", userId);
+        return userService.updateUser(userId, updateDto);
     }
 
-    @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable Long id) {
-        log.info("Запрос на получение пользователя с id = {}", id);
-        return userService.getUserById(id);
+    @GetMapping(USER_ID_PATH)
+    public UserDto getUserById(@PathVariable Long userId) {
+        logRequest("получение пользователя", userId);
+        return userService.getUserById(userId);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(USER_ID_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id) {
-        log.info("Запрос на удаление пользователя с id = {}", id);
-        userService.deleteUser(id);
+    public void deleteUser(@PathVariable Long userId) {
+        logRequest("удаление пользователя", userId);
+        userService.deleteUser(userId);
+    }
+
+    private void logRequest(String action) {
+        log.info("Запрос на {}", action);
+    }
+
+    private void logRequest(String action, Long userId) {
+        log.info("Запрос на {} с ID: {}", action, userId);
     }
 }
