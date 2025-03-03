@@ -5,6 +5,7 @@ import lombok.*;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
+
 @Builder(toBuilder = true)
 @Getter
 @Setter
