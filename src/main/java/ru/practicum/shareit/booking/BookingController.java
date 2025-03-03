@@ -13,43 +13,41 @@ import java.util.Collection;
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
-public class BookingController {
-    private static final String USER_ID_HEADER = "X-Sharer-User-Id";
-
+public final class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BookingDto createBooking(
-            @RequestHeader(USER_ID_HEADER) long userId,
-            @RequestBody @Valid CreateBookingDto createBookingDto) {
-        return bookingService.createBooking(userId, createBookingDto);
+            @RequestHeader("X-Sharer-User-Id") long bookerId,
+            @RequestBody @Valid CreateBookingDto dto) {
+        return bookingService.createBooking(bookerId, dto);
     }
 
     @GetMapping("/{bookingId}")
-    public BookingDto getBookingById(
-            @RequestHeader(USER_ID_HEADER) long userId,
+    public BookingDto getBooking(
+            @RequestHeader("X-Sharer-User-Id") long userId,
             @PathVariable long bookingId) {
         return bookingService.getBooking(bookingId, userId);
     }
 
     @GetMapping
-    public Collection<BookingDto> getUserBookings(
-            @RequestHeader(USER_ID_HEADER) long userId,
+    public Collection<BookingDto> getBookings(
+            @RequestHeader("X-Sharer-User-Id") long bookerId,
             @RequestParam(defaultValue = "ALL") BookingSearchState state) {
-        return bookingService.getBookings(userId, state);
+        return bookingService.getBookings(bookerId, state);
     }
 
     @GetMapping("/owner")
     public Collection<BookingDto> getOwnerBookings(
-            @RequestHeader(USER_ID_HEADER) long ownerId,
+            @RequestHeader("X-Sharer-User-Id") long ownerId,
             @RequestParam(defaultValue = "ALL") BookingSearchState state) {
         return bookingService.getOwnerBookings(ownerId, state);
     }
 
     @PatchMapping("/{bookingId}")
-    public BookingDto updateBookingApproval(
-            @RequestHeader(USER_ID_HEADER) long ownerId,
+    public BookingDto approveBooking(
+            @RequestHeader("X-Sharer-User-Id") long ownerId,
             @PathVariable long bookingId,
             @RequestParam boolean approved) {
         return bookingService.approveBooking(bookingId, ownerId, approved);

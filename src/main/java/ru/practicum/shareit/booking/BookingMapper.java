@@ -40,8 +40,8 @@ public class BookingMapper {
         return Booking.builder()
                 .start(dto.getStart())
                 .end(dto.getEnd())
-                .item(Item.builder().id(dto.getItemId()).build())
-                .booker(User.builder().id(bookerId).build())
+                .item(Item.builder().id(dto.getItemId()).build())  // Используется только ID для связи
+                .booker(User.builder().id(bookerId).build())      // Используется только ID пользователя
                 .status(BookingStatus.WAITING)
                 .build();
     }
