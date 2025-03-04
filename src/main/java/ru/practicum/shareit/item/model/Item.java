@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Table(name = "items")
+@Table(name = "items", schema = "shareit_schema")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
@@ -19,16 +19,18 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     private Long id;
+    @Column(nullable = false)
     private String name;
+
     @Column(length = 512)
     private String description;
+    @Column(nullable = false)
     private Boolean available;
-    @JoinColumn(name = "user_id")
+
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User owner;
-    @CollectionTable(name = "comments", joinColumns = @JoinColumn(name = "item_id"))
-    @Column(name = "text")
-    @ElementCollection(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<String> comments;
+    private List<Comment> comments;
 }

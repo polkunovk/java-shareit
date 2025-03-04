@@ -11,15 +11,16 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Entity
-@Table(name = "comments")
+@Table(name = "comments", schema = "shareit_schema")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private long id;
+    private Long id;
 
+    @Column(name = "text", nullable = false, length = 512)
     private String text;
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
@@ -29,5 +30,6 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
+    @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 }
