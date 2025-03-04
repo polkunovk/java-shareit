@@ -1,11 +1,10 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.booking.enums.BookingSearchState;
-import ru.practicum.shareit.booking.interfaces.BookingService;
+import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.booking.model.BookingDto;
 import ru.practicum.shareit.booking.model.CreateBookingDto;
 import java.util.Collection;
@@ -34,14 +33,14 @@ public final class BookingController {
     @GetMapping
     public Collection<BookingDto> getBookings(
             @RequestHeader("X-Sharer-User-Id") long bookerId,
-            @RequestParam(defaultValue = "ALL") BookingSearchState state) {
+            @RequestParam(defaultValue = "ALL") BookingDto.BookingSearchState state) {
         return bookingService.getBookings(bookerId, state);
     }
 
     @GetMapping("/owner")
     public Collection<BookingDto> getOwnerBookings(
             @RequestHeader("X-Sharer-User-Id") long ownerId,
-            @RequestParam(defaultValue = "ALL") BookingSearchState state) {
+            @RequestParam(defaultValue = "ALL") BookingDto.BookingSearchState state) {
         return bookingService.getOwnerBookings(ownerId, state);
     }
 

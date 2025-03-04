@@ -2,7 +2,6 @@ package ru.practicum.shareit.booking.model;
 
 import lombok.Builder;
 import lombok.Data;
-import ru.practicum.shareit.booking.enums.BookingStatus;
 import ru.practicum.shareit.item.model.ItemDto;
 import ru.practicum.shareit.user.model.UserDto;
 
@@ -17,4 +16,13 @@ public class BookingDto {
     private ItemDto item;
     private UserDto booker;
     private BookingStatus status;
+
+    public enum BookingSearchState {
+        ALL,
+        CURRENT,
+        PAST,
+        FUTURE,
+        WAITING,
+        REJECTED
+    }
 }
