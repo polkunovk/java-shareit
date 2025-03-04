@@ -32,5 +32,5 @@ public class Item {
     private User owner;
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<Comment> comments;
+    private List<String> comments;
 }
