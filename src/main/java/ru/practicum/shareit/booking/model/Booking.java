@@ -16,9 +16,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Booking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "booking_id")
     private Long id;
 
     @Column(name = "start_date", nullable = false)
@@ -32,10 +33,9 @@ public class Booking {
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "booker_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User booker;
 
-    @Enumerated(EnumType.STRING) // Добавить эту аннотацию!
-    @Column(name = "status", nullable = false, length = 20)
+    @Column(name = "status", nullable = false)
     private BookingStatus status;
 }
