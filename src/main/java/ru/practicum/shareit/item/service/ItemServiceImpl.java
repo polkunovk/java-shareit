@@ -35,17 +35,17 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRequestRepository itemRequestRepository;
 
     @Override
-    public ItemDto addItem(Long ownerId, ItemDto itemDto, Long requestId) { // ✅ Добавили requestId
+    public ItemDto addItem(Long ownerId, ItemDto itemDto, Long requestId) {
         User owner = userRepository.findById(ownerId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         ItemRequest itemRequest = null;
-        if (requestId != null) { // ✅ Теперь используем параметр requestId вместо itemDto.getRequestId()
+        if (requestId != null) {
             itemRequest = itemRequestRepository.findById(requestId)
                     .orElseThrow(() -> new NoSuchElementException("Request not found"));
         }
 
-        Item item = ItemMapper.toItem(itemDto, owner, itemRequest); // ✅ Теперь передаём `ItemRequest`
+        Item item = ItemMapper.toItem(itemDto, owner, itemRequest);
 
         return ItemMapper.toItemDto(itemRepository.save(item));
     }
@@ -125,6 +125,13 @@ public class ItemServiceImpl implements ItemService {
             return List.of();
         }
         return itemRepository.search(text).stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemDto> getItemsByRequestId(Long requestId) {
+        return itemRepository.findByRequest_Id(requestId).stream()
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }

@@ -31,7 +31,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto createBooking(Long userId, BookingDto bookingDto) {
-        // Проверяем, указан ли itemId
+
         if (bookingDto.getItemId() == null) {
             throw new NoSuchElementException("Item not found");
         }
@@ -42,7 +42,7 @@ public class BookingServiceImpl implements BookingService {
         Item item = itemRepository.findById(bookingDto.getItemId())
                 .orElseThrow(() -> new NoSuchElementException("Item not found"));
 
-        // Если вещь недоступна, выбрасываем `IllegalArgumentException`, которая будет обработана как `400 Bad Request`
+
         if (!item.getAvailable()) {
             throw new IllegalArgumentException("Item is not available for booking");
         }

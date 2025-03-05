@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    // Найти все вещи, принадлежащие конкретному владельцу
+
     List<Item> findByOwnerId(Long ownerId);
 
-    // Найти все вещи, связанные с определённым запросом
-    List<Item> findByRequest_Id(Long requestId); // ✅ Обновили (раньше было `findByRequestId`)
+
+    List<Item> findByRequest_Id(Long requestId);
 
     @Query("SELECT i FROM Item i " +
             "WHERE (UPPER(i.name) LIKE UPPER(CONCAT('%', ?1, '%')) " +

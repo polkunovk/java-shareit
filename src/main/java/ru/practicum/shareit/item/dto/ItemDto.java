@@ -25,15 +25,15 @@ public class ItemDto {
     @NotNull(message = "Доступность вещи должна быть указана")
     private Boolean available;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL) // ✅ Скрываем `requestId`, если `null`
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long requestId;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL) // ✅ Скрываем `lastBooking`, если `null`
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private BookingShortDto lastBooking;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL) // ✅ Скрываем `nextBooking`, если `null`
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private BookingShortDto nextBooking;
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY) // ✅ Скрываем `comments`, если пустой
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CommentDto> comments;
 }

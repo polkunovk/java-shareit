@@ -18,7 +18,7 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
-                .requestId(item.getRequest() != null ? item.getRequest().getId() : null) // ✅ Корректное извлечение requestId
+                .requestId(item.getRequest() != null ? item.getRequest().getId() : null)
                 .build();
     }
 
@@ -28,27 +28,30 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
-                .requestId(item.getRequest() != null ? item.getRequest().getId() : null) // ✅ Безопасное извлечение requestId
-                .lastBooking(lastBooking != null ? BookingShortDto.builder()
-                        .id(lastBooking.getId())
-                        .bookerId(lastBooking.getBooker().getId())
-                        .build() : null)
-                .nextBooking(nextBooking != null ? BookingShortDto.builder()
-                        .id(nextBooking.getId())
-                        .bookerId(nextBooking.getBooker().getId())
-                        .build() : null)
+                .requestId(item.getRequest() != null ? item.getRequest().getId() : null)
+                .lastBooking(toBookingShortDto(lastBooking))
+                .nextBooking(toBookingShortDto(nextBooking))
                 .comments(comments)
                 .build();
     }
 
-    public static Item toItem(ItemDto itemDto, User owner, ItemRequest request) { // ✅ Используем ItemRequest, а не requestId
+    public static Item toItem(ItemDto itemDto, User owner, ItemRequest request) {
         return Item.builder()
                 .id(itemDto.getId())
                 .name(itemDto.getName())
                 .description(itemDto.getDescription())
                 .available(itemDto.getAvailable())
                 .owner(owner)
-                .request(request) // ✅ Правильное связывание с ItemRequest
+                .request(request)
                 .build();
+    }
+
+    private static BookingShortDto toBookingShortDto(Booking booking) {
+        return (booking != null)
+                ? BookingShortDto.builder()
+                .id(booking.getId())
+                .bookerId(booking.getBooker().getId())
+                .build()
+                : null;
     }
 }

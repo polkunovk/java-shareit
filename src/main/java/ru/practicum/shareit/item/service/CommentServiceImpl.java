@@ -34,18 +34,18 @@ public class CommentServiceImpl implements CommentService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NoSuchElementException("Item not found"));
 
-        // Проверяем, что пользователь арендовал вещь и аренда завершена
+
         boolean hasCompletedBooking = bookingRepository.existsByBookerIdAndItemIdAndEndBefore(
                 userId, itemId, LocalDateTime.now()
         );
 
         if (!hasCompletedBooking) {
-            throw new IllegalArgumentException("User has not completed booking for this item"); // 400 Bad Request
+            throw new IllegalArgumentException("User has not completed booking for this item");
         }
 
-        // Создаём и сохраняем комментарий
+
         Comment comment = CommentMapper.toComment(commentDto, item, author);
-        comment.setCreated(LocalDateTime.now()); // Устанавливаем дату создания
+        comment.setCreated(LocalDateTime.now());
 
         return CommentMapper.toCommentDto(commentRepository.save(comment));
     }

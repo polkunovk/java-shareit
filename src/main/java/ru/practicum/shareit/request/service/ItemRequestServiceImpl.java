@@ -24,7 +24,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     private final ItemRequestRepository itemRequestRepository;
     private final UserRepository userRepository;
-    private final ItemService itemService; // ✅ Добавляем зависимость для получения вещей по запросу
+    private final ItemService itemService;
 
     @Override
     public ItemRequestDto createRequest(Long userId, ItemRequestDto itemRequestDto) {
