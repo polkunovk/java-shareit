@@ -30,14 +30,14 @@ public class BookingDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private UserDto booker;
+
     private BookingStatus status;
 
-    public enum BookingSearchState {
-        ALL,
-        CURRENT,
-        PAST,
-        FUTURE,
-        WAITING,
-        REJECTED
-    }
+    @FutureOrPresent(message = "Дата начала бронирования должна быть в будущем или настоящем")
+    @NotNull(message = "Дата начала бронирования не может быть пустой")
+    private LocalDateTime start;
+
+    @Future(message = "Дата окончания бронирования должна быть в будущем")
+    @NotNull(message = "Дата окончания бронирования не может быть пустой")
+    private LocalDateTime end;
 }

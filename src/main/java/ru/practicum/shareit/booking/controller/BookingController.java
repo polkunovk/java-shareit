@@ -2,13 +2,11 @@ package ru.practicum.shareit.booking.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.dto.CreateBookingDto;
-import java.util.Collection;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/bookings")
@@ -50,13 +48,5 @@ public class BookingController {
             @RequestHeader("X-Sharer-User-Id") Long ownerId,
             @RequestParam(defaultValue = "ALL") String state) {
         return bookingService.getOwnerBookings(ownerId, state);
-    }
-
-    @PatchMapping("/{bookingId}")
-    public BookingDto approveBooking(
-            @RequestHeader("X-Sharer-User-Id") long ownerId,
-            @PathVariable long bookingId,
-            @RequestParam boolean approved) {
-        return bookingService.approveBooking(bookingId, ownerId, approved);
     }
 }

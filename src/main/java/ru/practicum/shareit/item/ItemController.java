@@ -16,12 +16,13 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
+    private final CommentService commentService;
+
     @PostMapping
     public ItemDto addItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                            @Valid @RequestBody ItemDto itemDto,
                            @RequestParam(value = "requestId", required = false) Long requestId) {
-        return itemService.addItem(ownerId, itemDto, requestId); // ✅ Теперь передаём 3 аргумента
-    }
+        return itemService.addItem(ownerId, itemDto, requestId);
 
     @PatchMapping("/{id}")
     public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,

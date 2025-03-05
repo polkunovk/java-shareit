@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @Table(name = "bookings")
 @Getter
 @Setter
-@ToString
-@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,7 +19,6 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
     private Long id;
 
     @Column(name = "start_date", nullable = false)
