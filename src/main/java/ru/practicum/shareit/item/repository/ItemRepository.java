@@ -11,7 +11,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByOwnerId(Long ownerId);
 
-
+    @Query("SELECT i FROM Item i LEFT JOIN FETCH i.request WHERE i.request.id = ?1")
     List<Item> findByRequest_Id(Long requestId);
 
     @Query("SELECT i FROM Item i " +

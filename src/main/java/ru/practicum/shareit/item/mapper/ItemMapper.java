@@ -13,13 +13,18 @@ import java.util.List;
 public class ItemMapper {
 
     public static ItemDto toItemDto(Item item) {
-        return ItemDto.builder()
+        ItemDto itemDto = ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
                 .requestId(item.getRequest() != null ? item.getRequest().getId() : null)
                 .build();
+
+        System.out.println("[toItemDto] Преобразовали item в itemDto: " + itemDto +
+                ", requestId=" + itemDto.getRequestId());
+
+        return itemDto;
     }
 
     public static ItemDto toItemDto(Item item, Booking lastBooking, Booking nextBooking, List<CommentDto> comments) {
@@ -29,8 +34,18 @@ public class ItemMapper {
                 .description(item.getDescription())
                 .available(item.getAvailable())
                 .requestId(item.getRequest() != null ? item.getRequest().getId() : null)
-                .lastBooking(toBookingShortDto(lastBooking))
-                .nextBooking(toBookingShortDto(nextBooking))
+                .lastBooking(lastBooking != null
+                        ? BookingShortDto.builder()
+                        .id(lastBooking.getId())
+                        .bookerId(lastBooking.getBooker().getId())
+                        .build()
+                        : null)
+                .nextBooking(nextBooking != null
+                        ? BookingShortDto.builder()
+                        .id(nextBooking.getId())
+                        .bookerId(nextBooking.getBooker().getId())
+                        .build()
+                        : null)
                 .comments(comments)
                 .build();
     }
@@ -44,14 +59,5 @@ public class ItemMapper {
                 .owner(owner)
                 .request(request)
                 .build();
-    }
-
-    private static BookingShortDto toBookingShortDto(Booking booking) {
-        return (booking != null)
-                ? BookingShortDto.builder()
-                .id(booking.getId())
-                .bookerId(booking.getBooker().getId())
-                .build()
-                : null;
     }
 }

@@ -3,7 +3,6 @@ package ru.practicum.shareit.request.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
@@ -11,6 +10,7 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
+import ru.practicum.shareit.item.dto.ItemDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,8 +45,16 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        return itemRequestRepository.findByRequestor_IdOrderByCreatedDesc(userId).stream()
-                .map(request -> ItemRequestMapper.toItemRequestDtoWithItems(request, itemService.getItemsByRequestId(request.getId())))
+        List<ItemRequest> requests = itemRequestRepository.findByRequestor_IdOrderByCreatedDesc(userId);
+
+        System.out.println("[getUserRequests] Найдено запросов: " + requests.size());
+
+        return requests.stream()
+                .map(request -> {
+                    List<ItemDto> items = itemService.getItemsByRequestId(request.getId());
+                    System.out.println("[getUserRequests] requestId=" + request.getId() + ", items=" + items);
+                    return ItemRequestMapper.toItemRequestDtoWithItems(request, items);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -55,8 +63,16 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        return itemRequestRepository.findAllExceptOwn(userId).stream()
-                .map(request -> ItemRequestMapper.toItemRequestDtoWithItems(request, itemService.getItemsByRequestId(request.getId())))
+        List<ItemRequest> requests = itemRequestRepository.findAllExceptOwn(userId);
+
+        System.out.println("[getAllRequests] Найдено запросов: " + requests.size());
+
+        return requests.stream()
+                .map(request -> {
+                    List<ItemDto> items = itemService.getItemsByRequestId(request.getId());
+                    System.out.println("[getAllRequests] requestId=" + request.getId() + ", items=" + items);
+                    return ItemRequestMapper.toItemRequestDtoWithItems(request, items);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -69,6 +85,8 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 .orElseThrow(() -> new NoSuchElementException("Request not found"));
 
         List<ItemDto> items = itemService.getItemsByRequestId(requestId);
+        System.out.println("[getRequestById] items для запроса ID " + requestId + ": " + items.size());
+
         return ItemRequestMapper.toItemRequestDtoWithItems(itemRequest, items);
     }
 }
