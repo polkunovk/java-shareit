@@ -3,20 +3,22 @@ package ru.practicum.shareit.user.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Builder(toBuilder = true)
-@Getter
-@Setter
-@ToString
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
+
+    @Column(nullable = false)
     private String name;
-    @Column(length = 512, nullable = false, unique = true)
+
+    @Column(nullable = false, unique = true)
     private String email;
 }

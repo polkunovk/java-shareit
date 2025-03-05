@@ -1,39 +1,47 @@
 package ru.practicum.shareit.booking.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.practicum.shareit.booking.model.BookingStatus;
+import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.booking.status.BookingStatus;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    List<Booking> findByBookerIdAndItemId(long bookerId, long itemId);
+    List<Booking> findByBookerIdOrderByStartDesc(Long bookerId);
 
-    List<Booking> findByBookerIdOrderByStartDesc(long bookerId);
+    List<Booking> findByItem_Owner_IdOrderByStartDesc(Long ownerId);
 
-    List<Booking> findByBookerIdAndEndBeforeOrderByStartDesc(long bookerId, LocalDateTime before);
+    List<Booking> findByBookerIdAndStatusOrderByStartDesc(Long bookerId, BookingStatus status);
 
-    List<Booking> findByBookerIdAndStartAfterAndEndBeforeOrderByStartDesc(long bookerId, LocalDateTime after, LocalDateTime before);
+    List<Booking> findByItem_Owner_IdAndStatusOrderByStartDesc(Long ownerId, BookingStatus status);
 
-    List<Booking> findByBookerIdAndStartAfterOrderByStartDesc(long bookerId, LocalDateTime after);
+    List<Booking> findByBookerIdAndEndBeforeOrderByStartDesc(Long bookerId, LocalDateTime now);
 
-    List<Booking> findByBookerIdAndStatusOrderByStartDesc(long bookerId, BookingStatus status);
+    List<Booking> findByBookerIdAndStartAfterOrderByStartDesc(Long bookerId, LocalDateTime now);
 
-    List<Booking> findByItemId(long itemId);
+    @Query("SELECT b FROM Booking b WHERE b.booker.id = :bookerId AND b.start <= :now AND b.end >= :now ORDER BY b.start DESC")
+    List<Booking> findCurrentBookingsForUser(Long bookerId, LocalDateTime now);
 
-    List<Booking> findByItemIn(Collection<Item> items);
+    @Query("SELECT b FROM Booking b WHERE b.item.owner.id = :ownerId AND b.start <= :now AND b.end >= :now ORDER BY b.start DESC")
+    List<Booking> findCurrentBookingsForOwner(Long ownerId, LocalDateTime now);
 
-    List<Booking> findByItemOwnerIdOrderByStartDesc(long ownerId);
+    List<Booking> findByItem_Owner_IdAndEndBeforeOrderByStartDesc(Long ownerId, LocalDateTime now);
 
-    List<Booking> findByItemOwnerIdAndEndBeforeOrderByStartDesc(long ownerId, LocalDateTime before);
+    List<Booking> findByItem_Owner_IdAndStartAfterOrderByStartDesc(Long ownerId, LocalDateTime now);
 
-    List<Booking> findByItemOwnerIdAndStartAfterAndEndBeforeOrderByStartDesc(long ownerId, LocalDateTime after, LocalDateTime before);
+    @Query("SELECT COUNT(b) > 0 FROM Booking b " +
+            "WHERE b.booker.id = :bookerId " +
+            "AND b.item.id = :itemId " +
+            "AND b.end < :now " +
+            "AND b.status = 'APPROVED'")
+    boolean existsByBookerIdAndItemIdAndEndBefore(Long bookerId, Long itemId, LocalDateTime now);
 
-    List<Booking> findByItemOwnerIdAndStartAfterOrderByStartDesc(long ownerId, LocalDateTime after);
+    Optional<Booking> findTopByItem_IdAndStartBeforeAndStatusOrderByEndDesc(Long itemId, LocalDateTime now, BookingStatus status);
 
-    List<Booking> findByItemOwnerIdAndStatusOrderByStartDesc(long ownerId, BookingStatus status);
+    Optional<Booking> findTopByItem_IdAndStartAfterAndStatusOrderByStartAsc(Long itemId, LocalDateTime now, BookingStatus status);
 }

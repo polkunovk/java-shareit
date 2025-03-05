@@ -2,33 +2,39 @@ package ru.practicum.shareit.item.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.List;
-
-@Builder(toBuilder = true)
-@Getter
-@Setter
-@ToString
 @Entity
 @Table(name = "items")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Item {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id")
     private Long id;
+
+    @Column(nullable = false)
     private String name;
-    @Column(length = 512)
+
+    @Column(nullable = false)
     private String description;
+
+    @Column(name = "is_available", nullable = false)
     private Boolean available;
-    @JoinColumn(name = "user_id")
+
     @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
-    @CollectionTable(name = "comments", joinColumns = @JoinColumn(name = "item_id"))
-    @Column(name = "text")
-    @ElementCollection(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private List<String> comments;
+
+    @Column(name = "request_id")
+    private Long requestId;
+
+    @ManyToOne
+    @JoinColumn(name = "request_id", nullable = true)
+    private ItemRequest request;
 }

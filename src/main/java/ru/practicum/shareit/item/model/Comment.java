@@ -6,7 +6,8 @@ import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 
-@Builder(toBuilder = true)
+@Entity
+@Table(name = "comments")
 @Getter
 @Setter
 @ToString
@@ -14,20 +15,24 @@ import java.time.LocalDateTime;
 @Table(name = "comments")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private long id;
+    private Long id;
 
+    @Column(nullable = false)
     private String text;
+
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    private LocalDateTime createDate;
+    @Column(nullable = false)
+    private LocalDateTime created;
 }
