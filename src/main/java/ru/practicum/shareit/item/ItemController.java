@@ -23,6 +23,7 @@ public class ItemController {
                            @Valid @RequestBody ItemDto itemDto,
                            @RequestParam(value = "requestId", required = false) Long requestId) {
         return itemService.addItem(ownerId, itemDto, requestId);
+    }
 
     @PatchMapping("/{id}")
     public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,
