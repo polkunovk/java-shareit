@@ -56,24 +56,21 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
+			<!-- JPA (Hibernate) -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-jpa</artifactId>
+			</dependency>
+			<!-- PostgreSQL Driver -->
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<scope>runtime</scope>
+			</dependency>
 	</dependencies>
 
 	<build>
@@ -96,32 +93,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.1.2</version>
-				<configuration>
-					<configLocation>checkstyle.xml</configLocation>
-					<failOnViolation>true</failOnViolation>
-					<logViolationsToConsole>true</logViolationsToConsole>
-					<includeTestSourceDirectory>true</includeTestSourceDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<phase>compile</phase>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>com.puppycrawl.tools</groupId>
-						<artifactId>checkstyle</artifactId>
-						<version>10.3</version>
-					</dependency>
-				</dependencies>
-			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -133,6 +104,32 @@
 							<spring.profiles.active>test</spring.profiles.active>
 						</systemPropertyVariables>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>3.1.2</version>
+					<configuration>
+						<configLocation>checkstyle.xml</configLocation>
+						<failOnViolation>true</failOnViolation>
+						<logViolationsToConsole>true</logViolationsToConsole>
+						<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>check</goal>
+							</goals>
+							<phase>compile</phase>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>10.3</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
