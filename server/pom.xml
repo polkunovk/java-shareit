@@ -86,6 +86,16 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version> <!-- Добавили версию -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>ru.practicum.shareit.server.ShareItServerApp</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
