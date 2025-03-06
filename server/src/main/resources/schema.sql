@@ -1,4 +1,4 @@
--- Удаление таблиц в правильном порядке (учитываем внешние ключи)
+-- Удаление таблиц в правильном порядке (учитывая внешние ключи)
 DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS bookings CASCADE;
 DROP TABLE IF EXISTS items CASCADE;

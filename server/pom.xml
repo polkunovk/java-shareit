@@ -94,7 +94,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>ru.practicum.shareit.server.ShareItServerApp</mainClass>
+                    <mainClass>ru.practicum.shareit.ShareItServerApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
