@@ -13,7 +13,7 @@ public class CommentMapper {
         return CommentDto.builder()
                 .id(comment.getId())
                 .text(comment.getText())
-                .authorName(comment.getAuthor().getName())
+                .authorName(comment.getAuthor().getName()) // Имя автора комментария
                 .created(comment.getCreated())
                 .build();
     }
@@ -24,7 +24,7 @@ public class CommentMapper {
                 .text(commentDto.getText())
                 .item(item)
                 .author(author)
-                .created(LocalDateTime.now())
+                .created(LocalDateTime.now()) // Время создания
                 .build();
     }
 }

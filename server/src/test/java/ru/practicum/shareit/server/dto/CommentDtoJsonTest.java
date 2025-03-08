@@ -35,15 +35,17 @@ class CommentDtoJsonTest {
 
     @Test
     void shouldSerializeCommentDto() throws Exception {
-
+        // Создание объекта CommentDto
         CommentDto commentDto = new CommentDto();
         commentDto.setId(1L);
         commentDto.setText("Great item!");
         commentDto.setAuthorName("John Doe");
         commentDto.setCreated(LocalDateTime.of(2025, 3, 10, 14, 0));
 
+        // Сериализация в JSON
         String json = objectMapper.writeValueAsString(commentDto);
 
+        // Проверка
         assertThat(json).contains("\"id\":1");
         assertThat(json).contains("\"text\":\"Great item!\"");
         assertThat(json).contains("\"authorName\":\"John Doe\"");
@@ -60,8 +62,10 @@ class CommentDtoJsonTest {
                 + "\"created\":\"2025-03-10T14:00:00\""
                 + "}";
 
+        // Десериализация JSON
         CommentDto commentDto = objectMapper.readValue(json, CommentDto.class);
 
+        // Проверка
         assertThat(commentDto.getId()).isEqualTo(1L);
         assertThat(commentDto.getText()).isEqualTo("Great item!");
         assertThat(commentDto.getAuthorName()).isEqualTo("John Doe");
@@ -70,15 +74,17 @@ class CommentDtoJsonTest {
 
     @Test
     void shouldFailValidationIfTextIsBlank() {
-
+        // Создание объекта с пустым текстом комментария
         CommentDto commentDto = new CommentDto();
         commentDto.setId(1L);
         commentDto.setText("");
         commentDto.setAuthorName("John Doe");
         commentDto.setCreated(LocalDateTime.now());
 
+        // Проверка валидации
         Set<ConstraintViolation<CommentDto>> violations = validator.validate(commentDto);
 
+        // Ошибка
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Текст комментария не может быть пустым");
     }

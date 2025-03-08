@@ -42,6 +42,7 @@ public class BookingServiceImpl implements BookingService {
         Item item = itemRepository.findById(bookingDto.getItemId())
                 .orElseThrow(() -> new NoSuchElementException("Item not found"));
 
+        // Вещь недоступна
         if (!item.getAvailable()) {
             throw new IllegalArgumentException("Item is not available for booking");
         }

@@ -43,7 +43,9 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                                                   @Param("itemId") Long itemId,
                                                   @Param("now") LocalDateTime now);
 
+    // Поиск  последнего бронирования вещи
     Optional<Booking> findTopByItem_IdAndStartBeforeAndStatusOrderByEndDesc(Long itemId, LocalDateTime now, BookingStatus status);
 
+    // Поиск следующего бронирование вещи
     Optional<Booking> findTopByItem_IdAndStartAfterAndStatusOrderByStartAsc(Long itemId, LocalDateTime now, BookingStatus status);
 }

@@ -45,8 +45,10 @@ class BookingDtoJsonTest {
         bookingDto.setStart(LocalDateTime.of(2025, 3, 10, 14, 0));
         bookingDto.setEnd(LocalDateTime.of(2025, 3, 11, 14, 0));
 
+        // Сериализация в JSON
         String json = objectMapper.writeValueAsString(bookingDto);
 
+        // Проверка
         assertThat(json).contains("\"id\":1");
         assertThat(json).contains("\"itemId\":10");
         assertThat(json).contains("\"bookerId\":20");
@@ -57,7 +59,7 @@ class BookingDtoJsonTest {
 
     @Test
     void shouldDeserializeBookingDto() throws Exception {
-
+        // JSON-строка
         String json = "{"
                 + "\"id\":1,"
                 + "\"itemId\":10,"
@@ -67,8 +69,10 @@ class BookingDtoJsonTest {
                 + "\"end\":\"2025-03-11T14:00:00\""
                 + "}";
 
+        // Десериализация JSON
         BookingDto bookingDto = objectMapper.readValue(json, BookingDto.class);
 
+        // Проверка
         assertThat(bookingDto.getId()).isEqualTo(1L);
         assertThat(bookingDto.getItemId()).isEqualTo(10L);
         assertThat(bookingDto.getBookerId()).isEqualTo(20L);
@@ -79,67 +83,77 @@ class BookingDtoJsonTest {
 
     @Test
     void shouldFailValidationIfItemIdIsNull() {
-
+        // Создание объект с пустым itemId
         BookingDto bookingDto = new BookingDto();
         bookingDto.setStart(LocalDateTime.now().plusDays(1));
         bookingDto.setEnd(LocalDateTime.now().plusDays(2));
 
+        // Проверка валидации
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
 
+        // Ожидание ошибки
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Item ID cannot be null");
     }
 
     @Test
     void shouldFailValidationIfStartIsNull() {
-
+        // Создание объекта с пустым start
         BookingDto bookingDto = new BookingDto();
         bookingDto.setItemId(10L);
         bookingDto.setEnd(LocalDateTime.now().plusDays(2));
 
+        // Проверка валидации
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
 
+        // Ожидание ошибки
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Дата начала бронирования не может быть пустой");
     }
 
     @Test
     void shouldFailValidationIfEndIsNull() {
-
+        // Создание объекта с пустым end
         BookingDto bookingDto = new BookingDto();
         bookingDto.setItemId(10L);
         bookingDto.setStart(LocalDateTime.now().plusDays(1));
 
+        // Проверка валидации
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
 
+        // Ожидание ошибки
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Дата окончания бронирования не может быть пустой");
     }
 
     @Test
     void shouldFailValidationIfStartIsInThePast() {
-
+        // Создание объекта с датой начала в прошлом
         BookingDto bookingDto = new BookingDto();
         bookingDto.setItemId(10L);
         bookingDto.setStart(LocalDateTime.now().minusDays(1));
         bookingDto.setEnd(LocalDateTime.now().plusDays(2));
 
+        // Проверка валидации
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
 
+        // Ожидание ошибки
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Дата начала бронирования должна быть в будущем или настоящем");
     }
 
     @Test
     void shouldFailValidationIfEndIsNotInFuture() {
-
+        // Создание объекта с датой окончания в прошлом
         BookingDto bookingDto = new BookingDto();
         bookingDto.setItemId(10L);
         bookingDto.setStart(LocalDateTime.now().plusDays(1));
         bookingDto.setEnd(LocalDateTime.now().minusDays(1));
 
+        // Проверка валидации
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
 
+        // Ожидание ошибки
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Дата окончания бронирования должна быть в будущем");
     }
