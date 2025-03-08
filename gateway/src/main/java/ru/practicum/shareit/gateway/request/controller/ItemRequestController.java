@@ -13,34 +13,26 @@ import ru.practicum.shareit.gateway.request.dto.ItemRequestDto;
 public class ItemRequestController {
     private final ItemRequestClient itemRequestClient;
 
-    /**
-     * Создание запроса вещи.
-     */
+    // Создание запроса вещи.
     @PostMapping
     public ResponseEntity<Object> createRequest(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                 @Valid @RequestBody ItemRequestDto itemRequestDto) {
         return itemRequestClient.createRequest(userId, itemRequestDto);
     }
 
-    /**
-     * Получение запросов пользователя.
-     */
+    // Получение запросов пользователя.
     @GetMapping
     public ResponseEntity<Object> getUserRequests(@RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemRequestClient.getUserRequests(userId);
     }
 
-    /**
-     * Получение всех запросов.
-     */
+    // Получение всех запросов.
     @GetMapping("/all")
     public ResponseEntity<Object> getAllRequests(@RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemRequestClient.getAllRequests(userId);
     }
 
-    /**
-     * Получение запроса по ID.
-     */
+    // Получение запроса по ID.
     @GetMapping("/{requestId}")
     public ResponseEntity<Object> getRequestById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                  @PathVariable("requestId") Long requestId) {

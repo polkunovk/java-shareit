@@ -13,9 +13,7 @@ import ru.practicum.shareit.gateway.booking.dto.BookingDto;
 public class BookingController {
     private final BookingClient bookingClient;
 
-    /**
-     * Создание бронирования.
-     */
+    // Создание бронирования.
     @PostMapping
     public ResponseEntity<Object> createBooking(
             @RequestHeader("X-Sharer-User-Id") Long userId,
@@ -23,9 +21,7 @@ public class BookingController {
         return bookingClient.createBooking(userId, bookingDto);
     }
 
-    /**
-     * Подтверждение или отклонение бронирования владельцем.
-     */
+    // Подтверждение или отклонение бронирования владельцем.
     @PatchMapping("/{bookingId}")
     public ResponseEntity<Object> approveBooking(
             @RequestHeader("X-Sharer-User-Id") Long ownerId,
@@ -34,9 +30,7 @@ public class BookingController {
         return bookingClient.approveBooking(ownerId, bookingId, approved);
     }
 
-    /**
-     * Получение информации о бронировании.
-     */
+    // Получение информации о бронировании.
     @GetMapping("/{bookingId}")
     public ResponseEntity<Object> getBooking(
             @RequestHeader("X-Sharer-User-Id") Long userId,
@@ -44,9 +38,7 @@ public class BookingController {
         return bookingClient.getBooking(userId, bookingId);
     }
 
-    /**
-     * Получение всех бронирований пользователя с фильтрацией по `state`.
-     */
+    // Получение всех бронирований пользователя с фильтрацией по `state`.
     @GetMapping
     public ResponseEntity<Object> getUserBookings(
             @RequestHeader("X-Sharer-User-Id") Long userId,
@@ -54,9 +46,7 @@ public class BookingController {
         return bookingClient.getUserBookings(userId, state);
     }
 
-    /**
-     * Получение всех бронирований владельцем вещи с фильтрацией по `state`.
-     */
+    // Получение всех бронирований владельцем вещи с фильтрацией по `state`.
     @GetMapping("/owner")
     public ResponseEntity<Object> getOwnerBookings(
             @RequestHeader("X-Sharer-User-Id") Long ownerId,

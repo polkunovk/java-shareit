@@ -14,7 +14,7 @@ import ru.practicum.shareit.gateway.user.dto.UserDto;
 @RequiredArgsConstructor
 public class UserClient {
     private final RestTemplate restTemplate;
-    private final String serverUrl = "http://localhost:9090/users";
+    private final String serverUrl = "http://shareit-server:9090/users"; // URL `shareIt-server`
 
     public ResponseEntity<Object> createUser(UserDto userDto) {
         return restTemplate.postForEntity(serverUrl, userDto, Object.class);
