@@ -38,4 +38,3 @@ public class ItemRequestController {
         return ResponseEntity.ok(itemRequestService.getRequestById(userId, requestId));
     }
 }
-

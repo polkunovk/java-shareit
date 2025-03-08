@@ -21,7 +21,7 @@ public class ItemMapper {
                 .requestId(item.getRequest() != null ? item.getRequest().getId() : null)
                 .build();
 
-        System.out.println("🛠️ [toItemDto] Преобразовали item в itemDto: " + itemDto +
+        System.out.println("[toItemDto] Преобразовали item в itemDto: " + itemDto +
                 ", requestId=" + itemDto.getRequestId());
 
         return itemDto;

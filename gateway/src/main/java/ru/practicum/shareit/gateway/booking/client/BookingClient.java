@@ -10,7 +10,7 @@ import ru.practicum.shareit.gateway.booking.dto.BookingDto;
 @RequiredArgsConstructor
 public class BookingClient {
     private final RestTemplate restTemplate;
-    private final String serverUrl = "http://localhost:9090/bookings";
+    private final String serverUrl = "http://shareit-server:9090/bookings"; // URL `shareIt-server`
 
     public ResponseEntity<Object> createBooking(Long userId, BookingDto bookingDto) {
         HttpHeaders headers = new HttpHeaders();

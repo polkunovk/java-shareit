@@ -47,8 +47,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
         List<ItemRequest> requests = itemRequestRepository.findByRequestor_IdOrderByCreatedDesc(userId);
 
-        System.out.println("[getUserRequests] Найдено запросов: " + requests.size());
-
         return requests.stream()
                 .map(request -> {
                     List<ItemDto> items = itemService.getItemsByRequestId(request.getId());
@@ -64,8 +62,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         List<ItemRequest> requests = itemRequestRepository.findAllExceptOwn(userId);
-
-        System.out.println("[getAllRequests] Найдено запросов: " + requests.size());
 
         return requests.stream()
                 .map(request -> {
@@ -85,7 +81,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 .orElseThrow(() -> new NoSuchElementException("Request not found"));
 
         List<ItemDto> items = itemService.getItemsByRequestId(requestId);
-        System.out.println("[getRequestById] items для запроса ID " + requestId + ": " + items.size());
 
         return ItemRequestMapper.toItemRequestDtoWithItems(itemRequest, items);
     }
