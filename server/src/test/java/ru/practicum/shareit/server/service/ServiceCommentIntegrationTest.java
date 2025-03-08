@@ -94,4 +94,3 @@ class ServiceCommentIntegrationTest {
                 .hasMessage("User has not completed booking for this item");
     }
 }
-

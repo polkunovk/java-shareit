@@ -37,11 +37,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT COUNT(b) > 0 FROM Booking b " +
             "WHERE b.booker.id = :bookerId " +
             "AND b.item.id = :itemId " +
-            "AND b.end < :now " +
+            "AND b.end < :currentTime " +
             "AND b.status = 'APPROVED'")
     boolean existsByBookerIdAndItemIdAndEndBefore(@Param("bookerId") Long bookerId,
                                                   @Param("itemId") Long itemId,
-                                                  @Param("now") LocalDateTime now);
+                                                  @Param("currentTime") LocalDateTime currentTime);
 
     // Поиск  последнего бронирования вещи
     Optional<Booking> findTopByItem_IdAndStartBeforeAndStatusOrderByEndDesc(Long itemId, LocalDateTime now, BookingStatus status);

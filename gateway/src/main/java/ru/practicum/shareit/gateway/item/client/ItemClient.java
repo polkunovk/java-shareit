@@ -11,7 +11,7 @@ import ru.practicum.shareit.gateway.item.dto.ItemDto;
 @RequiredArgsConstructor
 public class ItemClient {
     private final RestTemplate restTemplate;
-    private final String serverUrl = "http://localhost:9090/items";
+    private final String serverUrl = "http://shareit-server:9090/items"; // URL `shareIt-server`
 
     public ResponseEntity<Object> addItem(Long ownerId, ItemDto itemDto) {
         HttpHeaders headers = new HttpHeaders();
