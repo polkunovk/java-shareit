@@ -50,4 +50,4 @@ public class BookingController {
             @RequestParam(defaultValue = "ALL") String state) {
         return ResponseEntity.ok(bookingService.getOwnerBookings(ownerId, state));
     }
-}
+} 
