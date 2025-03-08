@@ -17,12 +17,9 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public ResponseEntity<BookingDto> createBooking(
-            @RequestHeader("X-Sharer-User-Id") Long userId,
-            @Valid @RequestBody BookingDto bookingDto) {
-        BookingDto createdBooking = bookingService.createBooking(userId, bookingDto);
-        return ResponseEntity.created(URI.create("/bookings/" + createdBooking.getId()))
-                .body(createdBooking);
+    public ResponseEntity<BookingDto> createBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                                    @Valid @RequestBody BookingDto bookingDto) {
+        return ResponseEntity.ok(bookingService.createBooking(userId, bookingDto));
     }
 
     @PatchMapping("/{bookingId}")
@@ -43,14 +40,14 @@ public class BookingController {
     @GetMapping
     public ResponseEntity<List<BookingDto>> getUserBookings(
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @RequestParam(defaultValue = "ALL") BookingState state) {
-        return ResponseEntity.ok(bookingService.getUserBookings(userId, state.name()));
+            @RequestParam(defaultValue = "ALL") String state) {
+        return ResponseEntity.ok(bookingService.getUserBookings(userId, state));
     }
 
     @GetMapping("/owner")
     public ResponseEntity<List<BookingDto>> getOwnerBookings(
             @RequestHeader("X-Sharer-User-Id") Long ownerId,
-            @RequestParam(defaultValue = "ALL") BookingState state) {
-        return ResponseEntity.ok(bookingService.getOwnerBookings(ownerId, state.name()));
+            @RequestParam(defaultValue = "ALL") String state) {
+        return ResponseEntity.ok(bookingService.getOwnerBookings(ownerId, state));
     }
 }
