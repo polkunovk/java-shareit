@@ -66,7 +66,6 @@ class ItemDtoJsonTest {
 
         ItemDto itemDto = objectMapper.readValue(json, ItemDto.class);
 
-
         assertThat(itemDto.getId()).isEqualTo(1L);
         assertThat(itemDto.getName()).isEqualTo("Drill");
         assertThat(itemDto.getDescription()).isEqualTo("Powerful drill");
@@ -83,9 +82,7 @@ class ItemDtoJsonTest {
         itemDto.setDescription("Powerful drill");
         itemDto.setAvailable(true);
 
-
         Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Название вещи не может быть пустым");
@@ -100,9 +97,7 @@ class ItemDtoJsonTest {
         itemDto.setDescription("");
         itemDto.setAvailable(true);
 
-
         Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Описание вещи не может быть пустым");
@@ -117,9 +112,7 @@ class ItemDtoJsonTest {
         itemDto.setDescription("Powerful drill");
         itemDto.setAvailable(null);
 
-
         Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Доступность вещи должна быть указана");

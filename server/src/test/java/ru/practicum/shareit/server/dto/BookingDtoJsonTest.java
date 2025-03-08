@@ -45,9 +45,7 @@ class BookingDtoJsonTest {
         bookingDto.setStart(LocalDateTime.of(2025, 3, 10, 14, 0));
         bookingDto.setEnd(LocalDateTime.of(2025, 3, 11, 14, 0));
 
-
         String json = objectMapper.writeValueAsString(bookingDto);
-
 
         assertThat(json).contains("\"id\":1");
         assertThat(json).contains("\"itemId\":10");
@@ -69,9 +67,7 @@ class BookingDtoJsonTest {
                 + "\"end\":\"2025-03-11T14:00:00\""
                 + "}";
 
-
         BookingDto bookingDto = objectMapper.readValue(json, BookingDto.class);
-
 
         assertThat(bookingDto.getId()).isEqualTo(1L);
         assertThat(bookingDto.getItemId()).isEqualTo(10L);
@@ -88,9 +84,7 @@ class BookingDtoJsonTest {
         bookingDto.setStart(LocalDateTime.now().plusDays(1));
         bookingDto.setEnd(LocalDateTime.now().plusDays(2));
 
-
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Item ID cannot be null");
@@ -103,9 +97,7 @@ class BookingDtoJsonTest {
         bookingDto.setItemId(10L);
         bookingDto.setEnd(LocalDateTime.now().plusDays(2));
 
-
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Дата начала бронирования не может быть пустой");
@@ -118,9 +110,7 @@ class BookingDtoJsonTest {
         bookingDto.setItemId(10L);
         bookingDto.setStart(LocalDateTime.now().plusDays(1));
 
-
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Дата окончания бронирования не может быть пустой");
@@ -134,9 +124,7 @@ class BookingDtoJsonTest {
         bookingDto.setStart(LocalDateTime.now().minusDays(1));
         bookingDto.setEnd(LocalDateTime.now().plusDays(2));
 
-
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Дата начала бронирования должна быть в будущем или настоящем");
@@ -150,9 +138,7 @@ class BookingDtoJsonTest {
         bookingDto.setStart(LocalDateTime.now().plusDays(1));
         bookingDto.setEnd(LocalDateTime.now().minusDays(1));
 
-
         Set<ConstraintViolation<BookingDto>> violations = validator.validate(bookingDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Дата окончания бронирования должна быть в будущем");

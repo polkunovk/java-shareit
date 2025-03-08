@@ -42,9 +42,7 @@ class CommentDtoJsonTest {
         commentDto.setAuthorName("John Doe");
         commentDto.setCreated(LocalDateTime.of(2025, 3, 10, 14, 0));
 
-
         String json = objectMapper.writeValueAsString(commentDto);
-
 
         assertThat(json).contains("\"id\":1");
         assertThat(json).contains("\"text\":\"Great item!\"");
@@ -62,9 +60,7 @@ class CommentDtoJsonTest {
                 + "\"created\":\"2025-03-10T14:00:00\""
                 + "}";
 
-
         CommentDto commentDto = objectMapper.readValue(json, CommentDto.class);
-
 
         assertThat(commentDto.getId()).isEqualTo(1L);
         assertThat(commentDto.getText()).isEqualTo("Great item!");
@@ -81,9 +77,7 @@ class CommentDtoJsonTest {
         commentDto.setAuthorName("John Doe");
         commentDto.setCreated(LocalDateTime.now());
 
-
         Set<ConstraintViolation<CommentDto>> violations = validator.validate(commentDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Текст комментария не может быть пустым");

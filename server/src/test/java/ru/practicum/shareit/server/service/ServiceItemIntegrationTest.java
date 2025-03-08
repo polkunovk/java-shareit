@@ -33,11 +33,11 @@ class ServiceItemIntegrationTest {
 
     @BeforeEach
     void setUp() {
-
+        // Создание пользователей
         owner = userService.createUser(new UserDto(null, "Owner", "owner@mail.com"));
         otherUser = userService.createUser(new UserDto(null, "OtherUser", "other@mail.com"));
 
-
+        // Создание предмета
         itemDto = new ItemDto();
         itemDto.setName("Drill");
         itemDto.setDescription("Powerful drill");
@@ -49,7 +49,7 @@ class ServiceItemIntegrationTest {
 
         ItemDto createdItem = itemService.addItem(owner.getId(), itemDto);
 
-
+        // Проверка создания предмета
         assertThat(createdItem).isNotNull();
         assertThat(createdItem.getId()).isNotNull();
         assertThat(createdItem.getName()).isEqualTo(itemDto.getName());
@@ -62,10 +62,9 @@ class ServiceItemIntegrationTest {
 
         ItemDto createdItem = itemService.addItem(owner.getId(), itemDto);
 
-
         ItemDto foundItem = itemService.getItem(createdItem.getId(), owner.getId());
 
-
+        // Проверка получения предмета
         assertThat(foundItem).isNotNull();
         assertThat(foundItem.getId()).isEqualTo(createdItem.getId());
         assertThat(foundItem.getName()).isEqualTo(createdItem.getName());
@@ -83,7 +82,6 @@ class ServiceItemIntegrationTest {
 
         ItemDto createdItem = itemService.addItem(owner.getId(), itemDto);
 
-
         ItemDto updateDto = new ItemDto();
         updateDto.setName("Updated Drill");
         updateDto.setDescription("Even more powerful drill");
@@ -91,7 +89,7 @@ class ServiceItemIntegrationTest {
 
         ItemDto updatedItem = itemService.updateItem(owner.getId(), createdItem.getId(), updateDto);
 
-
+        // Проверка обновления предмета
         assertThat(updatedItem.getId()).isEqualTo(createdItem.getId());
         assertThat(updatedItem.getName()).isEqualTo("Updated Drill");
         assertThat(updatedItem.getDescription()).isEqualTo("Even more powerful drill");
@@ -103,7 +101,7 @@ class ServiceItemIntegrationTest {
 
         ItemDto createdItem = itemService.addItem(owner.getId(), itemDto);
 
-
+        // Проверка обновления предмета не владельцем
         ItemDto updateDto = new ItemDto();
         updateDto.setName("Unauthorized Update");
 
@@ -114,7 +112,7 @@ class ServiceItemIntegrationTest {
 
     @Test
     void getUserItems_shouldReturnAllItemsForOwner() {
-
+        // Создание нескольких предметов
         ItemDto firstItem = new ItemDto();
         firstItem.setName("Drill");
         firstItem.setDescription("Powerful drill");
@@ -127,10 +125,10 @@ class ServiceItemIntegrationTest {
         secondItem.setAvailable(true);
         itemService.addItem(owner.getId(), secondItem);
 
-
+        // Получение предметов владельца
         List<ItemDto> items = itemService.getUserItems(owner.getId());
 
-
+        // Проверка
         assertThat(items).hasSize(2);
     }
 
@@ -149,10 +147,9 @@ class ServiceItemIntegrationTest {
         secondItem.setAvailable(true);
         itemService.addItem(owner.getId(), secondItem);
 
-
         List<ItemDto> results = itemService.searchItems("Drill");
 
-
+        // Проверка поиска предметов
         assertThat(results).hasSize(1);
         assertThat(results.getFirst().getName()).isEqualTo("Drill");
     }
@@ -160,13 +157,13 @@ class ServiceItemIntegrationTest {
 
     @Test
     void searchItems_shouldReturnEmptyListIfNoMatch() {
-
+        // Создание предмета
         itemService.addItem(owner.getId(), itemDto);
 
-
+        // Поиск предметов по несуществующему запросу
         List<ItemDto> results = itemService.searchItems("Nonexistent");
 
-
+        // Проверка
         assertThat(results).isEmpty();
     }
 }

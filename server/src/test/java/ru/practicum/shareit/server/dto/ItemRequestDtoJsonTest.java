@@ -41,9 +41,7 @@ class ItemRequestDtoJsonTest {
         itemRequestDto.setDescription("I need a drill");
         itemRequestDto.setCreated(LocalDateTime.of(2025, 3, 10, 14, 0));
 
-
         String json = objectMapper.writeValueAsString(itemRequestDto);
-
 
         assertThat(json).contains("\"id\":1");
         assertThat(json).contains("\"description\":\"I need a drill\"");
@@ -59,9 +57,7 @@ class ItemRequestDtoJsonTest {
                 + "\"created\":\"2025-03-10T14:00:00\""
                 + "}";
 
-
         ItemRequestDto itemRequestDto = objectMapper.readValue(json, ItemRequestDto.class);
-
 
         assertThat(itemRequestDto.getId()).isEqualTo(1L);
         assertThat(itemRequestDto.getDescription()).isEqualTo("I need a drill");
@@ -76,9 +72,7 @@ class ItemRequestDtoJsonTest {
         itemRequestDto.setDescription("");
         itemRequestDto.setCreated(LocalDateTime.now());
 
-
         Set<ConstraintViolation<ItemRequestDto>> violations = validator.validate(itemRequestDto);
-
 
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getMessage()).isEqualTo("Описание запроса не может быть пустым");

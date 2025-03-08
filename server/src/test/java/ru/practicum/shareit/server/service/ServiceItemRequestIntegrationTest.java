@@ -38,11 +38,11 @@ class ServiceItemRequestIntegrationTest {
 
     @BeforeEach
     void setUp() {
-
+        // Создание пользователей
         requestor = userService.createUser(new UserDto(null, "Requestor", "requestor@mail.com"));
         otherUser = userService.createUser(new UserDto(null, "OtherUser", "other@mail.com"));
 
-
+        // Создание запроса на вещь
         itemRequestDto = new ItemRequestDto();
         itemRequestDto.setDescription("Need a drill");
     }
@@ -52,7 +52,7 @@ class ServiceItemRequestIntegrationTest {
 
         ItemRequestDto createdRequest = itemRequestService.createRequest(requestor.getId(), itemRequestDto);
 
-
+        // Проверка создание запрос
         assertThat(createdRequest).isNotNull();
         assertThat(createdRequest.getId()).isNotNull();
         assertThat(createdRequest.getDescription()).isEqualTo("Need a drill");
@@ -61,40 +61,40 @@ class ServiceItemRequestIntegrationTest {
 
     @Test
     void getUserRequests_shouldReturnRequestsForUser() {
-
+        // Создагие несколько запросов
         itemRequestService.createRequest(requestor.getId(), itemRequestDto);
         ItemRequestDto itemRequestDto2 = new ItemRequestDto();
         itemRequestDto2.setDescription("Need a hammer");
         itemRequestService.createRequest(requestor.getId(), itemRequestDto2);
 
-
+        // Получение запросов пользователя
         List<ItemRequestDto> requests = itemRequestService.getUserRequests(requestor.getId());
 
-
+        // Проверка
         assertThat(requests).hasSize(2);
     }
 
     @Test
     void getAllRequests_shouldReturnRequestsFromOtherUsers() {
-
+        // Создание запроса от первого пользователя
         itemRequestService.createRequest(requestor.getId(), itemRequestDto);
 
-
+        // Получение запроса для другого пользователя
         List<ItemRequestDto> requests = itemRequestService.getAllRequests(otherUser.getId());
 
-
+        // Проверка
         assertThat(requests).hasSize(1);
     }
 
     @Test
     void getRequestById_shouldReturnRequest() {
-
+        // Создание запроса
         ItemRequestDto createdRequest = itemRequestService.createRequest(requestor.getId(), itemRequestDto);
 
-
+        // Получение запроса по ID
         ItemRequestDto foundRequest = itemRequestService.getRequestById(requestor.getId(), createdRequest.getId());
 
-
+        // Проверка
         assertThat(foundRequest).isNotNull();
         assertThat(foundRequest.getId()).isEqualTo(createdRequest.getId());
         assertThat(foundRequest.getDescription()).isEqualTo(createdRequest.getDescription());

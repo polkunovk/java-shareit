@@ -32,7 +32,7 @@ public class ItemRequestMapper {
                 .id(request.getId())
                 .description(request.getDescription())
                 .created(request.getCreated())
-                .items(items)
+                .items(items) // Список вещей
                 .build();
     }
 }

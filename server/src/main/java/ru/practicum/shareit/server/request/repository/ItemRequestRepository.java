@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> {
 
+    // Все запросы, созданные конкретным пользователем
     List<ItemRequest> findByRequestor_IdOrderByCreatedDesc(Long userId);
 
     @Query("SELECT r FROM ItemRequest r WHERE r.requestor.id <> :userId ORDER BY r.created DESC")

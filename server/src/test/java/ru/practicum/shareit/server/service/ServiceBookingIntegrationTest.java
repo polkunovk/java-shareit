@@ -42,18 +42,18 @@ class ServiceBookingIntegrationTest {
 
     @BeforeEach
     void setUp() {
-
+        // Создание пользователей владельца и бронирующего
         owner = userService.createUser(new UserDto(null, "Owner", "owner@mail.com"));
         booker = userService.createUser(new UserDto(null, "Booker", "booker@mail.com"));
 
-
+        // Создание вещи
         ItemDto itemDto = new ItemDto();
         itemDto.setName("Drill");
         itemDto.setDescription("Powerful drill");
         itemDto.setAvailable(true);
         item = itemService.addItem(owner.getId(), itemDto);
 
-
+        // Создание бронирование
         bookingDto = new BookingDto();
         bookingDto.setItemId(item.getId());
         bookingDto.setStart(LocalDateTime.now().plusDays(1));
@@ -62,10 +62,10 @@ class ServiceBookingIntegrationTest {
 
     @Test
     void createBooking_shouldSaveAndReturnBooking() {
-
+        // Создание бронирования
         BookingDto createdBooking = bookingService.createBooking(booker.getId(), bookingDto);
 
-
+        // Проверка
         assertThat(createdBooking).isNotNull();
         assertThat(createdBooking.getId()).isNotNull();
         assertThat(createdBooking.getItem().getId()).isEqualTo(item.getId());
@@ -74,11 +74,11 @@ class ServiceBookingIntegrationTest {
 
     @Test
     void createBooking_shouldFailForUnavailableItem() {
-
+        // Делаем вещь недоступной
         item.setAvailable(false);
         itemService.updateItem(owner.getId(), item.getId(), item);
 
-
+        // Проверка исключения
         assertThatThrownBy(() -> bookingService.createBooking(booker.getId(), bookingDto))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Item is not available for booking");
@@ -89,19 +89,18 @@ class ServiceBookingIntegrationTest {
 
         BookingDto createdBooking = bookingService.createBooking(booker.getId(), bookingDto);
 
-
+        // Подтверждение бронирование
         BookingDto approvedBooking = bookingService.approveBooking(owner.getId(), createdBooking.getId(), true);
 
-
+        // Проверка
         assertThat(approvedBooking.getStatus()).isEqualTo(BookingStatus.APPROVED);
     }
 
     @Test
     void approveBooking_shouldFailIfNotOwner() {
-
         BookingDto createdBooking = bookingService.createBooking(booker.getId(), bookingDto);
 
-
+        // Проверка исключения при попытке подтверждения бронирования не владельцем
         assertThatThrownBy(() -> bookingService.approveBooking(booker.getId(), createdBooking.getId(), true))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Only owner can approve bookings");
@@ -112,24 +111,24 @@ class ServiceBookingIntegrationTest {
 
         BookingDto createdBooking = bookingService.createBooking(booker.getId(), bookingDto);
 
-
+        // Проверка для владельца
         BookingDto foundByOwner = bookingService.getBooking(owner.getId(), createdBooking.getId());
         assertThat(foundByOwner).isNotNull();
 
-
+        // Проверка для бронирующего
         BookingDto foundByBooker = bookingService.getBooking(booker.getId(), createdBooking.getId());
         assertThat(foundByBooker).isNotNull();
     }
 
     @Test
     void getBooking_shouldThrowExceptionForUnauthorizedUser() {
-
+        // Создание бронирование
         BookingDto createdBooking = bookingService.createBooking(booker.getId(), bookingDto);
 
-
+        // Создание третьего пользователя
         UserDto otherUser = userService.createUser(new UserDto(null, "Other", "other@mail.com"));
 
-
+        // Проверка, что сторонний пользователь не может получить бронирование
         assertThatThrownBy(() -> bookingService.getBooking(otherUser.getId(), createdBooking.getId()))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Access denied");
@@ -137,27 +136,27 @@ class ServiceBookingIntegrationTest {
 
     @Test
     void getUserBookings_shouldReturnUserBookings() {
-
+        // Создание нескольких бронирований
         bookingService.createBooking(booker.getId(), bookingDto);
         bookingService.createBooking(booker.getId(), bookingDto);
 
-
+        // Получение бронирования пользователя
         List<BookingDto> bookings = bookingService.getUserBookings(booker.getId(), "ALL");
 
-
+        // Проверка
         assertThat(bookings).hasSize(2);
     }
 
     @Test
     void getOwnerBookings_shouldReturnOwnerBookings() {
-
+        // Создание нескольких бронирований
         bookingService.createBooking(booker.getId(), bookingDto);
         bookingService.createBooking(booker.getId(), bookingDto);
 
-
+        // Получение бронирования владельца
         List<BookingDto> bookings = bookingService.getOwnerBookings(owner.getId(), "ALL");
 
-
+        // Проверка
         assertThat(bookings).hasSize(2);
     }
 }
