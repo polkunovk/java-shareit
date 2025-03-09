@@ -1,5 +1,6 @@
 package ru.practicum.shareit.gateway.config;
 
+import ru.practicum.shareit.gateway.error.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
