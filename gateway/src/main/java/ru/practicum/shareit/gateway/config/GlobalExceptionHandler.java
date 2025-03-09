@@ -15,24 +15,22 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity<Map<String, Object>> handleHttpClientError(HttpClientErrorException e) {
+    public ResponseEntity<ErrorResponse> handleHttpClientError(HttpClientErrorException e) {
         return buildErrorResponse(e.getStatusCode(), e.getResponseBodyAsString());
     }
 
     @ExceptionHandler(HttpServerErrorException.class)
-    public ResponseEntity<Map<String, Object>> handleHttpServerError(HttpServerErrorException e) {
+    public ResponseEntity<ErrorResponse> handleHttpServerError(HttpServerErrorException e) {
         return buildErrorResponse(e.getStatusCode(), e.getResponseBodyAsString());
     }
 
-    private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatusCode statusCode, String message) {
+    private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatusCode statusCode, String message) {
         HttpStatus status = HttpStatus.valueOf(statusCode.value());
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("error", status.getReasonPhrase());
-        response.put("message", message);
-        response.put("status", status.value());
-
-        return ResponseEntity.status(status).body(response);
+        ErrorResponse errorResponse = new ErrorResponse(
+                status.getReasonPhrase(),
+                message,
+                status.value()
+        );
+        return ResponseEntity.status(status).body(errorResponse);
     }
 }
-
