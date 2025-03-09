@@ -11,8 +11,6 @@ import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.practicum.shareit.server.item.dto.ItemDto;
 
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)

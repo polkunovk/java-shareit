@@ -13,7 +13,6 @@ import ru.practicum.shareit.server.booking.dto.BookingDto;
 import ru.practicum.shareit.server.booking.status.BookingStatus;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
