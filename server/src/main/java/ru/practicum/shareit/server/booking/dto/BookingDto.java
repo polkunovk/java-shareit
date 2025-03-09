@@ -6,9 +6,6 @@ import ru.practicum.shareit.server.booking.status.BookingStatus;
 import ru.practicum.shareit.server.item.dto.ItemDto;
 import ru.practicum.shareit.server.user.dto.UserDto;
 
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,7 +16,6 @@ import java.time.LocalDateTime;
 public class BookingDto {
     private Long id;
 
-    @NotNull(message = "Item ID cannot be null")
     private Long itemId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,11 +29,7 @@ public class BookingDto {
 
     private BookingStatus status;
 
-    @FutureOrPresent(message = "Дата начала бронирования должна быть в будущем или настоящем")
-    @NotNull(message = "Дата начала бронирования не может быть пустой")
     private LocalDateTime start;
 
-    @Future(message = "Дата окончания бронирования должна быть в будущем")
-    @NotNull(message = "Дата окончания бронирования не может быть пустой")
     private LocalDateTime end;
 }
