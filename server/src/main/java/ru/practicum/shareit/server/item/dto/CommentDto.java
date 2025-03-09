@@ -1,7 +1,6 @@
 package ru.practicum.shareit.server.item.dto;
 
 import lombok.*;
-import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Getter
