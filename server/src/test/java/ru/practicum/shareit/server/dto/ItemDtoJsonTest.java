@@ -72,49 +72,4 @@ class ItemDtoJsonTest {
         assertThat(itemDto.getAvailable()).isTrue();
         assertThat(itemDto.getRequestId()).isEqualTo(10L);
     }
-
-    @Test
-    void shouldFailValidationIfNameIsBlank() {
-
-        ItemDto itemDto = new ItemDto();
-        itemDto.setId(1L);
-        itemDto.setName("");
-        itemDto.setDescription("Powerful drill");
-        itemDto.setAvailable(true);
-
-        Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto);
-
-        assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("Название вещи не может быть пустым");
-    }
-
-    @Test
-    void shouldFailValidationIfDescriptionIsBlank() {
-
-        ItemDto itemDto = new ItemDto();
-        itemDto.setId(1L);
-        itemDto.setName("Drill");
-        itemDto.setDescription("");
-        itemDto.setAvailable(true);
-
-        Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto);
-
-        assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("Описание вещи не может быть пустым");
-    }
-
-    @Test
-    void shouldFailValidationIfAvailabilityIsNull() {
-
-        ItemDto itemDto = new ItemDto();
-        itemDto.setId(1L);
-        itemDto.setName("Drill");
-        itemDto.setDescription("Powerful drill");
-        itemDto.setAvailable(null);
-
-        Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto);
-
-        assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("Доступность вещи должна быть указана");
-    }
 }

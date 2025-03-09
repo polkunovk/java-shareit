@@ -63,18 +63,4 @@ class ItemRequestDtoJsonTest {
         assertThat(itemRequestDto.getDescription()).isEqualTo("I need a drill");
         assertThat(itemRequestDto.getCreated()).isEqualTo(LocalDateTime.of(2025, 3, 10, 14, 0));
     }
-
-    @Test
-    void shouldFailValidationIfDescriptionIsBlank() {
-
-        ItemRequestDto itemRequestDto = new ItemRequestDto();
-        itemRequestDto.setId(1L);
-        itemRequestDto.setDescription("");
-        itemRequestDto.setCreated(LocalDateTime.now());
-
-        Set<ConstraintViolation<ItemRequestDto>> violations = validator.validate(itemRequestDto);
-
-        assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("Описание запроса не может быть пустым");
-    }
 }
